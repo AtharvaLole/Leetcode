@@ -1,0 +1,138 @@
+RETURN STMT ::
+
+Excellent question — this is the exact moment recursion really “clicks” 👍
+Let’s be very precise and concrete.
+
+Short answer (intuition first)
+
+If you write plain:
+
+forward(idx + 1)
+
+
+instead of:
+
+return forward(idx + 1)
+
+
+then:
+
+✅ the recursive calls still run
+❌ but the result is thrown away
+❌ and the function eventually returns None
+
+That’s why you earlier saw “null / None return”.
+
+What Python actually does (step-by-step)
+Case 1️⃣ — with return
+return forward(idx + 1)
+
+
+Means:
+
+Call forward(idx + 1)
+
+Wait for it to finish
+
+Take its return value
+
+Immediately return that value to the caller
+
+So the value flows up the call stack.
+
+Case 2️⃣ — without return
+forward(idx + 1)
+# function ends here
+
+
+Means:
+
+Call forward(idx + 1)
+
+Ignore whatever it returns
+
+Reach the end of the function
+
+Python implicitly does:
+
+return None
+
+Call-stack demonstration (simplified)
+Code:
+def f():
+    g()
+
+def g():
+    return 6
+
+Execution:
+g() returns 6
+f() ignores it
+f() reaches end → returns None
+
+
+So:
+
+print(f())   # None
+
+Now relate this to your code
+Wrong version:
+arr.pop(idx)
+forward(idx + 1)   # ❌ value discarded
+
+
+Eventually:
+
+Base case returns 6
+
+Nobody returns it upward
+
+Top call returns None
+
+Correct version:
+arr.pop(idx)
+return forward(idx + 1)   # ✅ propagate result
+
+
+Now:
+
+Base case returns 6
+
+Every caller returns that same 6
+
+Final result is 6
+
+Visual: value flow
+❌ Without return
+base returns 6
+↑ ignored
+↑ ignored
+↑ ignored
+→ None
+
+✅ With return
+base returns 6
+↑ 6
+↑ 6
+↑ 6
+→ 6
+
+Golden rule (memorize this)
+
+🔑 Every recursive path must either
+
+return a value directly, or
+
+return the value of another recursive call
+
+If you break the chain even once → None.
+
+If you want, next I can:
+
+Show this bug using a tiny 3-element example
+
+Explain how Python inserts return None
+
+Show how languages like C++ behave differently
+
+Just tell me.
