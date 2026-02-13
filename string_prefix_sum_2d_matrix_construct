@@ -1,0 +1,7 @@
+pref=[[0]*26 for _ in range(len(s))]
+for i in range(len(s)):
+  for c in range(26):
+      pref[i][c]=pref[i-1][c]
+
+  chridx=ord(s[i])-ord("a")
+  pref[i][chridx]+=1
