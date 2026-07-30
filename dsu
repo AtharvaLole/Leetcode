@@ -1,0 +1,21 @@
+parent=list(range(n))
+rank=[1]*n
+
+def find(x):
+  if parent[x]!=x:
+      parent[x]=find(parent[x])
+  return parent[x]
+
+def union(x,y):
+  parx=find(x)
+  pary=find(y)
+
+  if parx==pary:
+      return
+  if rank[parx]>rank[pary]:
+      parent[pary]=parx
+  if rank[parx]<rank[pary]:
+      parent[parx]=pary
+  if rank[parx]==rank[pary]:
+      parent[parx]=pary
+      rank[pary]+=1
